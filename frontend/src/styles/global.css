@@ -35,3 +35,58 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+.muted-text { color: var(--muted); }
+.btn.small { padding: 3px 10px; font-size: 12px; }
+.btn.danger { border-color: #d92d20; color: #b42318; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* 结果横幅：筛选成功、业务告警、失败重试统一在这里表达，不再让空结果冒充无记录。 */
+.banner { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; font-size: 13px; }
+.banner-info { background: #eef4ff; border: 1px solid #b2ccff; color: #1849a9; }
+.banner-success { background: #ecfdf3; border: 1px solid #abefc6; color: #067647; }
+.banner-warn { background: #fffaeb; border: 1px solid #fedf89; color: #b54708; }
+.banner-error { background: #fef3f2; border: 1px solid #fda29b; color: #b42318; }
+
+.row-disabled { background: #fafbfc; }
+.tag-stopped-inline { display: inline-block; margin-left: 6px; font-size: 11px; color: #b42318; background: #fee4e2; border-radius: 999px; padding: 1px 8px; }
+.status-tag { border-radius: 999px; padding: 2px 10px; font-size: 12px; }
+.tag-stopped { background: #fee4e2; color: #b42318; }
+.tag-active { background: #ecfdf3; color: #067647; }
+
+.cell-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.action-line { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+.action-feedback.error, .action-feedback.conflict { color: #b42318; }
+.action-feedback.conflict { color: #b54708; }
+.action-feedback.success { color: #067647; }
+
+/* 管线详情 */
+.detail-wrap { display: flex; flex-direction: column; gap: 12px; }
+.detail-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.detail-card-head { display: flex; justify-content: space-between; align-items: center; }
+.detail-card-head h3 { margin: 0 0 10px; }
+.detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px 16px; margin: 0 0 12px; }
+.detail-item dt { color: var(--muted); font-size: 12px; }
+.detail-item dd { margin: 2px 0 0; font-size: 13px; }
+.detail-actions { display: flex; gap: 8px; align-items: center; }
+.detail-sections { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.detail-sections h4 { margin: 0 0 8px; }
+.table-note { color: var(--muted); font-size: 12px; margin: 8px 0 0; }
+
+/* 新建记录弹窗 */
+.modal-mask { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal-card { background: #fff; border-radius: 10px; width: 560px; max-width: calc(100vw - 32px); max-height: calc(100vh - 48px); overflow: auto; padding: 16px 18px; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.modal-head h3 { margin: 0; }
+.draft-tip { background: #fffaeb; border: 1px solid #fedf89; color: #b54708; border-radius: 6px; padding: 6px 10px; font-size: 12px; margin: 0 0 10px; }
+.draft-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.draft-item span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+.draft-item input, .draft-item select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; }
+.draft-item:has(.draft-item) { grid-column: auto; }
+.draft-form .form-error { grid-column: 1 / -1; margin: 0; }
+.modal-foot { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; }
+.modal-note { color: var(--muted); font-size: 12px; margin: 10px 0 0; }
+
+/* 头部工具区 */
+.head-tools { display: flex; align-items: center; gap: 14px; }
+.chaos-switch { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: #b54708; cursor: pointer; }
+

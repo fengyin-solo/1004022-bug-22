@@ -49,6 +49,7 @@ export function runAction(key: string, id: number, action: string): ActionResult
     status: target,
     pending: target !== lastStatus,
     abnormal: NEGATIVE_ACTIONS.some((verb) => action.startsWith(verb)),
+    rev: Number(rows[index].rev ?? 1) + 1,
   }
   const next = [...rows]
   next[index] = updated

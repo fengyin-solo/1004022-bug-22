@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Dashboard from '@/views/Dashboard.vue'
 const Pipeline = () => import('@/views/pipeline/index.vue')
+const PipelineDetail = () => import('@/views/pipeline/detail.vue')
 const Inspection = () => import('@/views/inspection/index.vue')
 const Defect = () => import('@/views/defect/index.vue')
 const OutRepair = () => import('@/views/out_repair/index.vue')
@@ -25,6 +26,7 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'dashboard', component: Dashboard },
     { path: '/pipeline', name: 'pipeline', component: Pipeline },
+    { path: '/pipeline/:id', name: 'pipeline-detail', component: PipelineDetail },
     { path: '/inspection', name: 'inspection', component: Inspection },
     { path: '/defect', name: 'defect', component: Defect },
     { path: '/out_repair', name: 'out_repair', component: OutRepair },
