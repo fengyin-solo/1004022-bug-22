@@ -5,7 +5,9 @@ export type EntryRow = {
   status: string
   pending: boolean
   abnormal: boolean
-  [field: string]: string | number | boolean
+  /** 乐观并发版本号：每次落库 +1，老数据没有该字段时按 0 处理。 */
+  version?: number
+  [field: string]: string | number | boolean | undefined
 }
 
 export type ModuleMeta = {
@@ -30,6 +32,13 @@ export type PageResult = {
 export type ActionResult = {
   ok: boolean
   message: string
+  /**
+   * 失败分类：
+   * - conflict：版本冲突，别人先落库了，页面应刷新到最新状态后再操作；
+   * - blocked：业务拦截（如管线已停用），记录保持原状态可继续处理；
+   * - error：参数或存储层错误。
+   */
+  code?: 'conflict' | 'blocked' | 'error'
 }
 
 export type OverviewResult = {

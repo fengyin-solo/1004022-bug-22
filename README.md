@@ -68,4 +68,9 @@ npm run build
 - 字段、状态、动作与流转目标集中在 `frontend/src/data/modules.ts`；示例数据在
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
+- 管线「已停用」后仅可查看：不再接受任何动作；关联该管线的「确认缺陷」「分配任务」会被拦截并说明原因，
+  历史记录保留可继续处理。
+- 每条记录带 `version`：动作按页面快照版本提交，别人先落库则本次操作判冲突，刷新到最新状态后可继续，
+  不会互相覆盖。
+- 列表读取失败时页面保留上次结果并给出重试入口，空结果只在确实无匹配时展示。
 - 想回到初始数据：清掉浏览器里 `underground-pipeline-inspection:entries` 这一项，或调用 `resetModule(模块)`。

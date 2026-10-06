@@ -30,6 +30,7 @@
     </table>
     <footer class="page-foot">
       <span>数据保存在本机浏览器里，换浏览器或清缓存会回到示例数据</span>
+      <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
     </footer>
   </section>
 </template>
@@ -42,11 +43,18 @@ import type { OverviewResult } from '@/data/types'
 
 const cards = ref<OverviewResult['cards']>([])
 const moduleRows = ref<OverviewResult['modules']>([])
+const errorMessage = ref('')
 
 function refresh() {
-  const payload = loadOverview()
-  cards.value = payload.cards
-  moduleRows.value = payload.modules
+  try {
+    const payload = loadOverview()
+    cards.value = payload.cards
+    moduleRows.value = payload.modules
+    errorMessage.value = ''
+  } catch (error) {
+    // 读取失败时保留上次统计结果，不清空。
+    errorMessage.value = error instanceof Error ? error.message : '概览统计读取失败，可点击重新统计重试'
+  }
 }
 
 onMounted(refresh)

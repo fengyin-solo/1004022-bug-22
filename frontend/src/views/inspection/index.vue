@@ -33,6 +33,11 @@
       <button class="btn ghost" type="button" @click="resetFilters">重置条件</button>
     </form>
 
+    <div v-if="loadError" class="error-banner" role="alert">
+      <span>{{ loadError }}，已保留上次加载结果。</span>
+      <button class="btn" type="button" @click="reload">重试</button>
+    </div>
+
     <table class="data-table">
       <thead>
         <tr>
@@ -57,15 +62,17 @@
             </button>
           </td>
         </tr>
-        <tr v-if="!rows.length">
-          <td :colspan="columns.length + 2" class="empty-state">暂无巡检任务数据，可先登记巡检任务</td>
+        <tr v-if="!rows.length && !loadError">
+          <td :colspan="columns.length + 2" class="empty-state">
+            {{ hasActiveFilters ? '没有符合筛选条件的巡检任务记录，可调整条件后重新查询' : '暂无巡检任务数据，可先登记巡检任务' }}
+          </td>
         </tr>
       </tbody>
     </table>
 
     <footer class="page-foot">
       <span>共 {{ total }} 条巡检任务记录</span>
-      <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
+      <span v-if="actionError" class="error-text">{{ actionError }}</span>
     </footer>
   </section>
 </template>
@@ -89,7 +96,8 @@ const stats = [{"label": "今日任务", "value": 0}, {"label": "待分配任务
 
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
-const errorMessage = ref('')
+const actionError = ref('')
+const loadError = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
 const statusSummary = computed(() =>
@@ -97,6 +105,9 @@ const statusSummary = computed(() =>
     status,
     count: rows.value.filter((row) => String(row.status) === status).length,
   })),
+)
+const hasActiveFilters = computed(() =>
+  Object.values(filters.value).some((value) => value.trim() !== ''),
 )
 
 function resetFilters() {
@@ -109,27 +120,28 @@ function exportRows() {
 }
 
 function openCreate() {
-  errorMessage.value = '巡检任务登记入口尚未接入审批流'
+  actionError.value = '巡检任务登记入口尚未接入审批流'
 }
 
 function runAction(action: string, row: EntryRow) {
-  errorMessage.value = ''
-  const result = applyAction(meta.key, Number(row.id), action)
+  actionError.value = ''
+  const result = applyAction(meta.key, Number(row.id), action, Number(row.version ?? 0))
   if (!result.ok) {
-    errorMessage.value = result.message
-    return
+    actionError.value = result.message
   }
+  // 成功、被拦截或版本冲突都重新拉取：列表始终对齐落库状态，可继续处理。
   reload()
 }
 
 function reload() {
-  errorMessage.value = ''
   try {
     const payload = listEntries(meta.key, filters.value)
     rows.value = payload.items
     total.value = payload.total
+    loadError.value = ''
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : '巡检任务列表读取失败'
+    // 保留上次结果，不把读取失败当成「没有记录」。
+    loadError.value = error instanceof Error ? error.message : '巡检任务列表读取失败'
   }
 }
 
